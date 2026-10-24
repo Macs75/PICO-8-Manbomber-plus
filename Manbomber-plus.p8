@@ -2025,13 +2025,13 @@ end
 function startMatch()
     local p = ""
     for v in all(setup) do p ..= v.."," end
-    load("manbomber_game.p8", "back to menu", p)
+    load("manbomber-plus_game", "back to menu", p)
 end
 --]]
 --[[#only game
 --back to the menu cart's title, with the set up it gave us
 function toTitle()
-    load("manbomber.p8", nil, stat(6))
+    load("manbomber-plus", nil, stat(6))
 end
 --]]
 --#only single game
@@ -2651,7 +2651,7 @@ end
 --the menu cart hands over the set up; started on its own,
 --this cart goes to the menu
 setup = split(stat(6))
-if (#setup < 5) load("manbomber.p8")
+if (#setup < 5) load("manbomber-plus")
 applySetup()
 currentScene = roundIndicationScene
 --]]

@@ -1,146 +1,99 @@
 pico-8 cartridge // http://www.pico-8.com
 version 29
 __lua__
-n4=sin function sin(n)return n4(-n/6.283)end n6=cos function cos(n)return n6(n/6.283)end function nt(n)return 64-#n*2end function J(n,e,o)o=o or false if(o==true)for o=1,#e do n=J(n,e[o])end return n else for e,o in pairs(e)do n[e]=o end
-return n end function g(e,t,l,n,o)l=l or false n=n or nil o=o or false if l then for l=1,#t do e=g(e,t[l],false,n,o)end return e else for t,l in pairs(t)do local i=false if o then for e=1,#n do if(t==n[e])i=true
+Z=sin function sin(n)return Z(-n/6.283)end nn=cos function cos(n)return nn(n/6.283)end function f(n)return 64-#n*2end function q(n,e,o)o=o or false if(o==true)for o=1,#e do n=q(n,e[o])end return n else for e,o in pairs(e)do n[e]=o end
+return n end function l(e,t,f,n,o)f=f or false n=n or nil o=o or false if f then for f=1,#t do e=l(e,t[f],false,n,o)end return e else for t,f in pairs(t)do local i=false if o then for e=1,#n do if(t==n[e])i=true
 end elseif n then if(t==n)i=true
-end if not i then if(type(l)=="table")e[t]=g({},l,false,n,o)else e[t]=l
-end end end return e end function nl(n,e)n[e]=nil end function K(n,e)n:nG()n=e n:nw()return n end C={N={0,1,5,6,11,11,11,11,6,5,1,0},nb=3,h=1}function C:ng(e,o,t,n)local n=n or self.N if(self.h>#n)self.h=1
-?e,o,t,n[self.h]
-self.nb-=1if(self.nb<0)self.h+=1self.nb=3
-end M={I=true,nS=false}function M:nH(n)self.nS=n end N=0h={nr={},A={},v="entity",c="entity_"..N,O=0,b=2}g(h,M)function h:x(n)if(not n or not n.v or n.v~="component")return
-self.nr[n.c]=n add(self.A,n)n.O=#self.A n.r=self end function h:e4(n)self.nr[n]:nH(true)end function h:l(n)return self.nr[n]end function h:e6()self:y()end function h:y()for n in all(self.A)do n:y()end end function h:d()if(not self.I)return
-for n in all(self.A)do if(n.I)n:d()
-end for n in all(self.A)do if(n.nS)nl(self.nr,n.c)del(self.A,n)
-end do return end local n=1for e in all(self.A)do e.O=n n+=1end end function h:i()if(not self.I)return
-for n in all(self.A)do if(n.I)n:i()
-end end ni=0I={r=nil,v="component",c="component_"..ni,O=0}g(I,M)function I:y()end function I:d()end function I:i()end d={C={},k={},U={},v="scene"}function d:g(n)if(not n or not n.v or n.v~="entity")return
-self.C[n.c]=n add(self.k,n)n.O=#self.k self.U[n.b]=self.U[n.b]or{}add(self.U[n.b],n)self.C[n.c]:e6()end function d:nJ(n)self.C[n]:nH(true)end function d:e5(n)return self.C[n]end function d:d()local e=false for n in all(self.k)do if(n.I)n:d()
-end for n in all(self.k)do if(n.nS)nl(self.C,n.c)del(self.k,n)del(self.U[n.b],n)e=true
-end self:nK()if(not e)return
-local n=1for e in all(self.k)do e.O=n n+=1end end function d:nK()end function d:i()for n=0,8do S()for n in all(self.U[n])do if(n.I)n:i()
-end end end function d:nw()for n in all(self.k)do n:y()end self:nA()end function d:nA()end function d:nG()end function O(n)local n=n or{}n=g({},{d,n},true)return n end function i(n)local n=n or{}n=g({},{h,n},true)n.c="entity_"..N N+=1return n end function l(n)local n=n or{}n=g({},{I,n},true)ni+=1return n end function nf(e)local n=i()n:x(l(o))n:x(l(U))n:x(l(p))n:x(l(A))n.b=4local o=n:l("Player")o.W=e return n end function n5()local n=i()n:x(l(k))n:x(l(U))n:x(l(p))n:x(l(A))n.b=3return n end function nd(n,e)local e,n=B(n,e),i()n:x(l(U))n:x(l(p))n:x(l(A))n:l("Transform"):n1(e.o,e.e)n:y()return n end _={w={}}n8=4function _:d()for n in all(self.w)do n:d()end end function _:i()for n in all(self.w)do n:i()end end function _:e8(o,t,l,i,f,d,r,n)local e=self add(e.w,{o=o,e=t,e7=l,nM=i,nN=f,nk=d,e9=r,em=n%16*8,ep=n\16*8,r=e,i=function(n)sspr(n.em,n.ep,8,8,n.o,n.e,rnd(4)+4-n.nk,rnd(4)+4-n.nk)end,d=function(n)n.o+=n.e7 n.e+=n.nM n.nM+=n.e9 n.nk*=.8n.nN-=1if(n.nN<0)del(n.r.w,n)
-end})end n7,n9,nm=1.6,6,6np={{o=3,e=4},{o=13,e=14},{o=3,e=14},{o=13,e=4}}nx={"SideIdle","SideIdle","UpIdle","DownIdle"}o={nV,c="Player",t=nil,nc=0,na=0,f=nil,a=nil,s=.8,u=1,Q=1,R=true,X=0,nP=3,nT=false,nE}function o:y()self.R=true self.t=self.r:l("Transform")local n=np[self.W+1]local n=B(n.o,n.e)self.t:n1(n.o+4,n.e+4)self.f=self.r:l("Sprite")self.f:Y(68)self.f:nO(1,2)self.f:nQ(4,12)self.a=self.r:l("Animator")local n=c.m({77,78,77,79,96,97,96,79},3)self.a:p("SideWalk",n)local n=c.m({70,71,70,72},2,true)self.a:p("UpWalk",n)local n=c.m({64,64,65,66},2,true)self.a:p("DownWalk",n)local n=c.m({64,102,103,104,105,105,105,105,105,105,105},4,false,false)self.a:p("Die",n)local n=c.m({64,106,107,108,108,107},4)self.a:p("Victory",n)local n=c.m({79,98,99,100,100,100,99},4)self.a:p("SideIdle",n)local n=c.m({73,74,75,76,76,76,75},4)self.a:p("UpIdle",n)local n=c.m({64,64,67,68,69,69,68},4)self.a:p("DownIdle",n)end function o:i()S()V(self.W)end function o:d()if self.R then self:ex()self:ey()if self.B then coresume(self.B,self)if(costatus(self.B)=="dead")self.B=nil
-end end end function o:Z(n)if(self.nR)return self._[n]
-if(n==5)return btnp(5,self.W)
-return btn(n,self.W)end function o:ex()if(self.nR)self:ew()
-local e,o,n=self.nP,self.s,nx[self.nP+1]if self:Z(0)then self.nc-=o n="SideWalk"self.f.V=true e=0elseif self:Z(1)then self.nc+=o n="SideWalk"self.f.V=false e=1elseif self:Z(2)then self.na-=o n="UpWalk"e=2elseif self:Z(3)then self.na+=o n="DownWalk"e=3end if(self:Z(5))self:nX()
-if(not(self.a.E==n))self.a:S(n)
-self.nP=e end function o:nX()if(self.u>0and not r:z(f(self.t.o,self.t.e)))local n=n5()n:y()local e=n:l("Bomb")e.nI=self.Q e:eb(self.t.o,self.t.e,self)r:g(n)self.u-=1return true
-return false end function o:ey()local t,l,n,e=self.t.o,self.t.e,self.nc,self.na local o=f(t,l)local i=mget(o.o,o.e)if(r:eg(o)~=nil or fget(i,0)and not fget(i,1))self:eS()return
-local i=self:eA()if n~=0then local e if(n>0)e="right"else e="left"
-local t,l=nr(t+n,l,3,3,e),n1(t+n,l,3,3,e)if t>0or i and l then local o,e=n,0if(not(i and l))o=t==3and n or n/3if t==1then e=-n elseif t==2then e=n end
-self.t.o+=o self.t.e+=e elseif self.nT then o.o+=sgn(n)local n=r:z(o)if(n)n:nY(e)
-end elseif e~=0then t=self.t.o local n if(e>0)n="down"else n="up"
-local t,l=nr(t,l+e,3,3,n),n1(t,l+e,3,3,n)if t>0or i and l then local n,o=0,e if(not(i and l))o=t==3and e or e/3if t==1then n=-e elseif t==2then n=e end
-self.t.o+=n self.t.e+=o elseif self.nT then o.e+=sgn(e)local e=r:z(o)if(e)e:nY(n)
-end end self:ek()self.nc,self.na=0,0end function o:ek()local e=f(self.t.o,self.t.e)local n=mget(e.o,e.e)local n=fget(n)if n==6and self.s<n7 and not self.B then self.s+=.2elseif n==10and self.Q<nm then self.Q+=1elseif n==18and self.u<n9 then self.u+=1elseif n==34then self.nT=true elseif n==66and not self.B then self.s-=.4if(self.s<.6)self.s=.6
-elseif n==14then self.B=cocreate(function()local e,o=self.i,self.s self.i=function(n)nc()end local n=6self.s=.4while n>0do n-=x local n=flr(rnd(100))/100printh(n)if(n<.03)self:nX()
-yield()end self.s,self.i=o,e end)else nz=false end if(n&Q~=0)W(e.o,e.e)sfx(41,3)
-end function o:eA()return r:z(f(self.t.o,self.t.e))end function o:eP()self.a:S("Victory")self.R=false end function o:eS()self.a:S("Die")self.R=false self.i=function(n)nc()end r:eT(self.r.c)end k={c="Bomb",t=nil,f=nil,a=nil,nZ=nil,nI=1,P=2,eN=false,nL,nj}function k:y()self.t=self.r:l("Transform")self.f=self.r:l("Sprite")self.f:Y(20)self.f:nO(1,1)self.a=self.r:l("Animator")local n=c.m({20,21},12)self.a:p("Bomb",n)end function k:eb(n,e,o)local n=f(n,e)local e=B(n.o,n.e)self.t:n1(e.o,e.e)self.nZ=o self.a:S("Bomb")r:eI(self,n)sfx(0,3)end function k:d()self.P-=x if(self.P<=0)self:n0()return
-if self.en then local e,o,n,t=self.t.o+self.nu,self.t.e+self.nh,self.nu>0and 7or 0,self.nh>0and 7or 0local n=f(e+n,o+t)local t=r:z(n)if(fget(mget(n.o,n.e),0)or ny(n)or t~=nil and t~=self)self.en=false else self.t.o,self.t.e=e,o
-end end function k:n0()local n=f(self.t.o,self.t.e)r:ee(n)local n=i()n:x(l(y))n:l("Explosion"):n0(self.t,self.nI)r:nJ(self.r.c)r:g(n)self.nZ.u+=1sfx(1,3)end function k:nY(n)self.nu,self.nh=0,0if n=="right"then self.nu=2elseif n=="left"then self.nu=-2elseif n=="down"then self.nh=2elseif n=="up"then self.nh=-2end self.en=true end y={c="Explosion",w={},P=.9,eo=false}function y:n0(n,t)local e,l,i,f,d,n=f(n.o,n.e),true,true,true,true,0self:eW(e.o,e.e)if(fget(mget(e.o,e.e),1))W(e.o,e.e)
-for o=1,t do if l==true then n=self:n2(e.o-o,e.e)if(n>0)n=o==t and 1or n self:ns(e.o-o,e.e,n,"horizontal",true)
-l=n>1end if i==true then n=self:n2(e.o,e.e-o)if(n>0)n=o==t and 1or n self:ns(e.o,e.e-o,n,"vertical",false)
-i=n>1end if f==true then n=self:n2(e.o+o,e.e)if(n>0)n=o==t and 1or n self:ns(e.o+o,e.e,n,"horizontal",false)
-f=n>1end if d==true then n=self:n2(e.o,e.e+o)if(n>0)n=o==t and 1or n self:ns(e.o,e.e+o,n,"vertical",true)
-d=n>1end end P:l("Camera"):nW(self.P/2,1.5)end function y:n2(n,e)local o,t=mget(n,e),r:z({o=n,e=e})if(t)t:n0()return 0
-if fget(o,1)then if(fget(o)&Q==0)self.eD(n,e)else W(n,e)
-return 1elseif fget(o,0)then return 0end return 2end function y:ns(t,l,o,i,f)local d,n=nd(t,l),{}local e=d:l("Animator")if i=="horizontal"then if(o==1)n={160,161,162,163}
+end if not i then if(type(f)=="table")e[t]=l({},f,false,n,o)else e[t]=f
+end end end return e end function M(n,e)n[e]=nil end function k(n,e)n:n9()n=e n:nc()return n end T={A={0,1,5,6,11,11,11,11,6,5,1,0},nu=3,m=1}function T:n0(e,o,t,n)local n=n or self.A if(self.m>#n)self.m=1
+?e,o,t,n[self.m]
+self.nu-=1if(self.nu<0)self.m+=1self.nu=3
+end D={C=true,ns=false}function D:nb(n)self.ns=n end F=0i={O={},p={},_="entity",r="entity_"..F,z=0,S=2}l(i,D)function i:c(n)if(not n or not n._ or n._~="component")return
+self.O[n.r]=n add(self.p,n)n.z=#self.p n.a=self end function i:nj(n)self.O[n]:nb(true)end function i:l(n)return self.O[n]end function i:nq()self:h()end function i:h()for n in all(self.p)do n:h()end end function i:f()if(not self.C)return
+for n in all(self.p)do if(n.C)n:f()
+end for n in all(self.p)do if(n.ns)M(self.O,n.r)del(self.p,n)
+end do return end local n=1for e in all(self.p)do e.z=n n+=1end end function i:t()if(not self.C)return
+for n in all(self.p)do if(n.C)n:t()
+end end N=0w={a=nil,_="component",r="component_"..N,z=0}l(w,D)function w:h()end function w:f()end function w:t()end e={E={},w={},P={},_="scene"}function e:nD(n)if(not n or not n._ or n._~="entity")return
+self.E[n.r]=n add(self.w,n)n.z=#self.w self.P[n.S]=self.P[n.S]or{}add(self.P[n.S],n)self.E[n.r]:nq()end function e:np(n)self.E[n]:nb(true)end function e:eo(n)return self.E[n]end function e:f()local e=false for n in all(self.w)do if(n.C)n:f()
+end for n in all(self.w)do if(n.ns)M(self.E,n.r)del(self.w,n)del(self.P[n.S],n)e=true
+end self:nF()if(not e)return
+local n=1for e in all(self.w)do e.z=n n+=1end end function e:nF()end function e:t()for n=0,8do h()for n in all(self.P[n])do if(n.C)n:t()
+end end end function e:nc()for n in all(self.w)do n:h()end self:Q()end function e:Q()end function e:n9()end function n(n)local n=n or{}n=l({},{e,n},true)return n end function m(n)local n=n or{}n=l({},{i,n},true)n.r="entity_"..F F+=1return n end function o(n)local n=n or{}n=l({},{w,n},true)N+=1return n end function n1(e)local n=m()n:c(o(nl))n:c(o(A))n:c(o(c))n:c(o(b))n.S=4local o=n:l("Player")o.et=e return n end function ne()local n=m()n:c(o(p))n:c(o(A))n:c(o(c))n:c(o(b))n.S=3return n end function O(n,e)local e,n=Q(n,e),m()n:c(o(A))n:c(o(c))n:c(o(b))n:l("Transform"):ny(e.e,e.o)n:h()return n end G={R={},nh=0}function G:f()self.nh-=v if(self.nh<=0)self.nh=.1+rnd(.2)add(self.R,C:nG())
+for n in all(self.R)do if(n.o<0)del(self.R,n)else n.o-=n.nH local e,o=n.o+n.j,n.nI n.e=16*sin(e*o+cos(e*o+2))+n.nJ
+end end function G:t()for n in all(self.R)do n:t()end end C={nr,na,nc,nu,R,no,n0}function C:nG()local n,e=q({},C),{236,223,239,255,143,159}n.j=rnd(1.5)n.i=e[flr(1+rnd(6))]n.nJ=flr(10+rnd(108))n.nI=flr(1+rnd(4))*.01n.o=130n.nH=1+rnd(2)return n end function C:t()spr(self.i,self.e,self.o)end p={r="Bomb",u=nil,i=nil,U=nil,ng=nil,nK=1,v=2,ef=false,ns,nh}function p:h()self.u=self.a:l("Transform")self.i=self.a:l("Sprite")self.i:V(20)self.i:nL(1,1)self.U=self.a:l("Animator")local n=a.q({20,21},12)self.U:D("Bomb",n)end function p:ei(n,e,o)local n=_(n,e)local e=Q(n.e,n.o)self.u:ny(e.e,e.o)self.ng=o self.U:F("Bomb")r:ed(self,n)sfx(0,3)end function p:f()self.v-=v if(self.v<=0)self:W()return
+if self.nx then local e,o,n,t=self.u.e+self.X,self.u.o+self.Y,self.X>0and 7or 0,self.Y>0and 7or 0local n=_(e+n,o+t)local t=r:nM(n)if(fget(mget(n.e,n.o),0)or n2(n)or t~=nil and t~=self)self.nx=false else self.u.e,self.u.o=e,o
+end end function p:W()local n=_(self.u.e,self.u.o)r:e1(n)local n=m()n:c(o(u))n:l("Explosion"):W(self.u,self.nK)r:np(self.a.r)r:nD(n)self.ng.el+=1sfx(1,3)end function p:er(n)self.X,self.Y=0,0if n=="right"then self.X=2elseif n=="left"then self.X=-2elseif n=="down"then self.Y=2elseif n=="up"then self.Y=-2end self.nx=true end u={r="Explosion",G={},v=.9,nk=false}function u:W(n,t)local e,f,i,d,l,n=_(n.e,n.o),true,true,true,true,0self:nN(e.e,e.o)if(fget(mget(e.e,e.o),1))H(e.e,e.o)
+for o=1,t do if f==true then n=self:Z(e.e-o,e.o)if(n>0)n=o==t and 1or n self:nn(e.e-o,e.o,n,"horizontal",true)
+f=n>1end if i==true then n=self:Z(e.e,e.o-o)if(n>0)n=o==t and 1or n self:nn(e.e,e.o-o,n,"vertical",false)
+i=n>1end if d==true then n=self:Z(e.e+o,e.o)if(n>0)n=o==t and 1or n self:nn(e.e+o,e.o,n,"horizontal",false)
+d=n>1end if l==true then n=self:Z(e.e,e.o+o)if(n>0)n=o==t and 1or n self:nn(e.e,e.o+o,n,"vertical",true)
+l=n>1end end y:l("Camera"):n2(self.v/2,1.5)end function u:Z(n,e)local o,t=mget(n,e),r:nM({e=n,o=e})if(t)t:W()return 0
+if fget(o,1)then if(fget(o)&nt==0)self.nO(n,e)else H(n,e)
+return 1elseif fget(o,0)then return 0end return 2end function u:nn(t,f,o,i,d)local l,n=O(t,f),{}local e=l:l("Animator")if i=="horizontal"then if(o==1)n={160,161,162,163}
 if(o==2)n={144,145,146,147}
-e.f.V=f elseif i=="vertical"then if(o==1)n={176,177,178,176}
+e.i.ne=d elseif i=="vertical"then if(o==1)n={176,177,178,176}
 if(o==2)n={135,134,133,132}
-e.f.et=f end e:p("burn",c.m(n,1.5))e:p("fade",c.m({n[4],n[3],n[2],n[1],58},1.5,false,false))e:S("burn")add(self.w,d)r:nD({o=t,e=l},1)end function y:eW(e,o)local t=nd(e,o)local n=t:l("Animator")n:p("burn",c.m({128,129,130,131},1.5))n:p("fade",c.m({131,130,129,128,58},2,false,false))n:S("burn")add(self.w,t)r:nD({o=e,e=o},1)end function y:d()self.P-=x if(self.P<=.3and not self.eo)for n in all(self.w)do n:l("Animator"):S("fade")local n=n:l("Transform")local n=f(n.o,n.e)r:nD(n,nil)end self.eo=true
-if(self.P<=0)r:nJ(self.r.c)return
-for n in all(self.w)do n:d()end end function y:i()for n in all(self.w)do n:i()end end function y.eD(n,e)local o=B(n,e)for n=0,n8 do R:e8(o.o+4,o.e+4,rnd(4)-2,rnd(4)-2,8,1,0,D)end W(n,e)if flr(rnd(100))<50then local o,t,l,i=flr(rnd(100)),0,0,{25,25,20,9,10,11}for f,i in pairs(i)do t+=i if(o>=l and o<=t)mset(n,e,47+f)return
-l+=i end end end U={c="Transform",o=0,e=0}function U:n1(n,e)self.o=n self.e=e end p={c="Sprite",f=0,t=nil,V=false,et=false,el=1,ei=1,ef=0,ed=0}function p:y()self.t=self.r:l("Transform")end function p:i()local n,e=self.t.o-self.ef-3,self.t.e-self.ed spr(self.f,n,e,self.el,self.ei,self.V,self.et)end function p:Y(n)self.f=n end function p:nO(n,e)self.el,self.ei=n,e end function p:nQ(n,e)self.ef,self.ed=n,e end A={c="Animator",f=nil,nn={},E="",n3=0,n4=false}function A:y()self.f=self.r:l("Sprite")end function A:p(e,n)n.r=self self.nn[e]=n end function A:S(n)if(n==self.E)return
-if(n~="")self.f:Y(self.nn[n]:D())self.n4=true else self.f:Y(self.nn[self.E]:D())self.n4=false
-self.E=n self.n3=0end function A:d()if self.n4 then self.n3+=1if(self.n3>=self.nn[self.E].er)self.f:Y(self.nn[self.E]:D())self.n3=0
-end end c={r=nil,n6={},h=0,er=0,e1=false,nv=true}function c.m(o,t,l,e)local n=J({},{c},true)n.n6=o n.er=t n.e1=l or false if(e==nil)n.nv=true else n.nv=e
-return n end function c:D()self.h+=1if self.h>#self.n6 then if(self.e1)self.r.f.V=not self.r.f.V
-if(self.nv)self:nC()else self.r.n4=false return self.n6[self.h-1]
-end return self.n6[self.h]end function c:nC()self.h=1end E={nq,nF,n5=false}v,D={},0function E:ev()reload(8192,8192,4096)local n,e=self.o,self.e for o=n,n+15do for t=e,e+15do mset(o-n,t-e,mget(o,t))end end end function E:i()map(0,0,-3,0)if(self.n5)nw()map(0,0,-3,0,16,16,128)
-end function E:eC()local o={}for n=3,13do for e=4,14do local t={o=n,e=e}if not fget(mget(n,e),0)then if(mget(n,e)~=53)add(o,t)else W(n,e)
-end end end local n=60+flr(rnd(5))for n=1,n do local n=1+flr(rnd(#o-1))local n=deli(o,n)mset(n.o,n.e,D)end end X={X={0,0,0,0},eU={28,86,4,110}}function X:nC()self.X={0,0,0,0}end function X:i()rectfill(0,0,129,24,0)for n=1,w.nU do V(n-1)local e,o=self.eU[n],n%2==0spr(164,e,1,2,2,o)local o=o and 2or 0spr(137,e-o,16,2.25,1)?self.X[n],e+8-o,18,11
-end S()end Y={ne=true,L=180}function Y:d()if(not self.ne)return
-self.L-=x if(self.L<=0)self.L=0self.ne=false
-end function Y:i()spr(136,61,3)spr(166,55,10,2.5,1)local n=flr(self.L)local e,n=n\60,n%60if(n<10)n="0"..n
-?e..":"..n,58,12,0
-end s={ec=false,nG,no=0,j=0,e=60,nB=false,N={2,3,4,5,6,7,8,9,10,11,12,13,14,15},nH}function s:ea(n)if n=="victory"then self.n_=self.eB elseif n=="tie"then self.n_=self.e_ elseif n=="champ"then self.n_=self.q end end function s:d()if not self.nB then if(self.no<64)self.no+=6
-if(self.no>56)self.j+=2
-if(self.j>=18)self.nB=true
-else if(btnp(❎))self:e0()
-end end function s:i()rectfill(64-self.no,self.e-self.j,64+self.no,self.e+self.j,0)if(self.nB)rect(1,self.e-self.j+1,127,self.e+self.j-1,11)self:n_()
-end function s:eB()C:ng("player "..self.nt+1 .." wins!",48,self.e-2,self.N)?"❎",114,self.e+8,11
-V(self.nt)spr(164,23,self.e-9,2,2)S()end function s:e_()local n="tie!"C:ng(n,nt(n),self.e-2,self.N)?"❎",114,self.e+8,11
-end function s:e0()if(self.ec)na=O(z)na.nV=self.nt music(-1,-800)r=K(w,na)else music(-1,-800)L.nE+=1r=K(w,L)
-end function s:q()C:ng("player "..self.nt+1 .." is the champion!!",13,self.e-2,self.N)?"❎",114,self.e+8,11
-end function B(e,o)local n={}n.o=e*a n.e=o*a return n end function f(e,o)local n={}n.o=e\a n.e=o\a return n end function T(n)return n.e*u+n.o end function n0(n)return{o=n%u,e=n\u}end function m(n,e)return n.o==e.o and n.e==e.e end function W(n,e)local o=flr(rnd(#v-1))+1mset(n,e,v[o])mset(n+u,e+u,0)end function nb()for n=0,15do for e=0,15do local o=mget(n,e)if(fget(o,0))mset(n+u,e+u,o)
-end end end function b(n,e)local n=f(n,e)local n=mget(n.o+u,n.e+u)return fget(n,0)end function nr(e,o,t,l,i)assert(i=="up"or i=="down"or i=="left"or i=="right","wrong direction entered!")local n=3if i=="up"then if(b(e-t,o-l))n-=2
-if(b(e+t,o-l))n-=1
-elseif i=="down"then if(b(e-t,o+l))n-=1
-if(b(e+t,o+l))n-=2
-elseif i=="left"then if(b(e-t,o-l))n-=2
-if(b(e-t,o+l))n-=1
-elseif i=="right"then if(b(e+t,o-l))n-=1
-if(b(e+t,o+l))n-=2
-end return n end function n1(n,e,o,t,l)assert(l=="up"or l=="down"or l=="left"or l=="right","wrong direction entered!")local i=f(n,e)if l=="up"then return m(i,f(n-o,e-t))and m(i,f(n+o,e-t))elseif l=="down"then return m(i,f(n-o,e+t))and m(i,f(n+o,e+t))elseif l=="left"then return m(i,f(n-o,e-t))and m(i,f(n-o,e+t))elseif l=="right"then return m(i,f(n+o,e-t))and m(i,f(n+o,e+t))end end function ny(e)for n in all(j)do if(m(f(n.t.o,n.t.e),e))return true
-end return false end q={c="Camera",nz={o=0,e=0},n8=false,n7=0,nl=0}function q:nW(e,n)self.n7=e if(n>self.nl)self.nl=n
-self.n8=true end function q:d()if self.n8 then if(self.n7<=0)self.n8=false self.nl,self.n7=0,0else self.nz={o=rnd(self.nl),e=rnd(self.nl)}self.n7-=x
-end end function q:i()if(self.n8)camera(self.nz.o,self.nz.e)else camera(0,0)
-end function ng(n)if n==1then e.o,e.e,e.n5=0,0,false v={4,5,6,8,9}D=2elseif n==2then e.o,e.e,e.n5=32,16,false v={23,24,25,184}D=3else e.o,e.e,e.n5=16,16,true v={4,5,6,8,9}D=22end end function nS()local n=Z w.nU,w.eu,w.eV=n[1],n[2],n[5]nu(n[3])ng(n[4])F:nC()L.nE=1end function nA()load("manbomber.p8",nil,stat(6))end n={u={},n9={},nJ,eu=0,F={},nK,nk}function n:nA()e.b=1self:g(e)e:ev()e:eC()R.b=5self:g(R)self:g(F)self.T=i(Y)self:g(self.T)local n=i(G)n.T=self.T self:g(n)nb()self:eE()music(5,700)end function n:nK()if(#self.F<=1and self.T.ne)self:ez()
-self:eL()end function n:nG()self.C={}self.k={}self.U={}self.F={}self.u={}self.n9={}j={}end function n:eE()for e=0,self.nU-1do local n=nf(e)n:l("Player").nR=e>=self.nU-self.eu self:g(n)add(self.F,n.c)add(j,n:l("Player"))end end function n:eT(n)del(self.F,n)end function n:ez()local n,e=i(s)local o=#self.F if o==0then e="tie"music(25)else e="victory"music(24)local e=self:e5(self.F[1]):l("Player")e:eP()F.X[e.W+1]+=1local o=F.X[e.W+1]n.nt=e.W if(o==self.eV)n.ec=true
-n.b=8end n:ea(e)self:g(n)self.T.ne=false end function n:eL()local o={}for t,n in pairs(self.u)do local e=f(n.t.o,n.t.e)local l=T(e)if(l~=t)self:ee(n0(t))o[l]=n mset(e.o+u,e.e+u,n.f.f)
-end self.u=J(self.u,o)end function n:nD(n,e)self.n9[T(n)]=e end function n:eg(n)return self.n9[T(n)]end function n:eI(e,n)self.u[T(n)]=e mset(n.o+u,n.e+u,e.f.f)end function n:ee(n)local e=T(n)if(self.u[e])mset(n.o+u,n.e+u,0)self.u[e]=nil
-end function n:z(n)return self.u[T(n)]end G={G=0,H=10,J=0,K=10,nm=1,h=0,nL=0,nM,nN,nk}function G:d()if(not self.T.ne or self.T.L>40)return
-self.nL-=x if(self.nL<=0)local n=self:D()mset(n.o,n.e,175)mset(n.o+u,n.e+u,1)local n=self:ej()mset(n.o,n.e,38)sfx(42,3)self.nL=.3
-end function G:D()local e,n,o,t=self.nm,self.h,self.np,self.nx if e==1then t=self.G o=n n+=1if(n>self.K)self.G+=1e=2n=self.G
-elseif e==2then t=n o=self.K n+=1if(n>self.H)self.K-=1e=3n=self.K
-elseif e==3then t=self.H o=n n-=1if(n<self.J)self.H-=1e=4n=self.H
-elseif e==4then t=n o=self.J n-=1if(n<self.G)self.J+=1e=1n=self.J
-end self.nm,self.h=e,n self.np,self.nx=o,t local n=mget(o+3,t+4)if(fget(n,0)and not fget(n,1))return self:D()else return{o=self.np+3,e=self.nx+4}
-end function G:ej()local n,e,o,t,l,i,f,d,r=self.nm,self.h,self.np,self.nx,self.J,self.K,self.H,self.G,self:D()self.nm,self.h,self.np,self.nx=n,e,o,t self.J,self.K,self.H,self.G=l,i,f,d return r end H={nE=1,nj=1.5,o=0,e=64,nO}function H:nA()self.nj,self.e=1.5,64self.eh="round "..self.nE.."!"self.o=nt(self.eh)end function H:d()if(self.nj>0)self.nj-=x else self.e-=5
-if(self.e<-10)r=K(self,w)P:l("Camera"):nW(.4,3)sfx(1,3)
-end function H:i()?self.eh,self.o,self.e,11
-end z={nQ,nR,eO=108,ny="fall",nX,ni=35,nY}function z:nw()local n=nf(self.nV)n:y()n:l("Player").I=false n:e4("Player")local e,o=n:l("Animator"),c.m({69,106,106,69,69,69,69},5)e:p("Landing",o)self.nq=n:l("Transform")self.nq:n1(63,0)n:l("Sprite"):nQ(0,0)self.q=n local n=i(s)n.nt=self.nV n.e=35n.e0=nA n:ea("champ")self.e2=n music(21)end function z:d()local n,e=self.nq.e,self.ny if e=="fall"then if(n<=20)n+=3
-if(n>20and n<80)n+=7
-if(n>=80)self.q:l("Animator"):S("Landing")self.ny="landing"P:l("Camera"):nW(.4,3)
-elseif e=="landing"then self.ni-=1if(self.ni<=0)self.q:l("Animator"):S("Victory")self.ny="jumping"self.ni=1
-elseif e=="jumping"then local e=self.ni%24if(e>=8and e<16)n-=1
-if(e>=16and e<24)n+=1
-self.ni+=1end self.nq.e=n self.q:d()if(e~="fall")self.e2:d()
-end function z:i()map(64,0,0,0)V(self.nV)self.q:i()S()spr(47,60,106)if(self.ny~="fall")self.e2:i()
-end nh={{-1,0},{1,0},{0,-1},{0,1}}nP={[6]=true,[10]=true,[18]=true,[34]=true}n2={[66]=true,[14]=true}ns=.9nT={{12,8,8,.18,4,8,.00222,1},{6,4,4,.08,8,4,.0011,1.2},{3,2,2,.03,14,2,.00055,1.4}}function nu(n)nI,nW,nD,nv,nC,nU,nB,nn=unpack(nT[n])end nu(2)function n_(n,e)return fget(mget(n+u,e+u),0)end function ne(n,o,t)t(n.o,n.e)for e in all(nh)do for o=1,o do local n,e=n.o+e[1]*o,n.e+e[2]*o local o=mget(n,e)if(fget(o,0)and not fget(o,1))break
-t(n,e)if(fget(o,1)or r.u[e*u+n])break
-end end end function n3(o)local n,e={},{}for e in pairs(r.n9)do n[e]=0end for o,n in pairs(r.u)do add(e,{nf=n0(o),M=n.P,nF=n.nI})end if(o)add(e,o)
-for n=1,2do for n in all(e)do ne(n.nf,n.nF,function(o,t)for e in all(e)do if(e.nf.o==o and e.nf.e==t and e.M>n.M)e.M=n.M
-end end)end end for e in all(e)do ne(e.nf,e.nF,function(o,t)local o=t*u+o n[o]=min(n[o]or 99,e.M)end)end if w.T.L<=41then for e=0,15do for o=0,15do if(mget(e,o)==38)n[o*u+e]=0
-end end end return n end function no(n,e,i,r,h,s)local n=e*u+n local n,c,e,t,f={[n]=0},{},{n},1,{}while t<=#e or#f>0do if(t>#e)add(e,deli(f,1))
-local o=e[t]t+=1local a=(n[o]+1)*a/r/30for t in all(nh)do local t,l=o%u+t[1],o\u+t[2]local i,d,u=l*u+t,i[l*u+t],fget(mget(t,l))if(not n[i]and not n_(t,l)and(s or not n2[u])and not(d and d<a+(h or.5)and d+.7>a))n[i],c[i]=n[o]+1,o add(u==6and r>nn-.1and f or e,i)
-end end return n,c end function o:eq(e,o,l)local n=0ne({o=e,e=o},self.Q,function(o,t)local e=fget(mget(o,t))if(e&2>0and e&Q==0or n2[e])n+=3
-if(l[t*u+o])n+=nC
-end)return n end function o:eF(n,e)local o=n3{nf={o=n,e=e},M=2,nF=self.Q}for n in pairs(no(n,e,o,self.s,ns))do if(not o[n])return true
-end end function o:eG(n,e)local t,l,n,e=self._,self.s/2,n*a+4-self.t.o,e*a+4-self.t.e local function o(n,e,o)if(n<-l)t[e]=true
-if(n>l)t[o]=true
-end if abs(n)>abs(e)then if(abs(e)>1)o(e,2,3)else o(n,0,1)
-else if(abs(n)>1)o(n,0,1)else o(e,2,3)
-end end function o:ew()self._={}if(rnd()<nB)self.eH=time()+1.5
-local e,o=self.t.o\a,self.t.e\a self.nd=(self.nd or 0)-1if(self.nd<=0)self.nd=nI+flr(rnd(nW+1))self:eJ(e,o)
-local n=self.eK if(n[1]==o*u+e and#n>1)deli(n,1)
-self:eG(n[1]%u,n[1]\u)local n=self.s-nn if(n>.1and rnd()<n/9)self.es=4+flr(rnd(5))
-if((self.es or 0)>0)self.es-=1self._=self.eM self._[5]=nil
-self.eM=self._ end function o:eJ(n,e)local o,t,l=e*u+n,n3(),time()<(self.eH or 0)local i,f=no(n,e,t,self.s,ns,l)local l for n in pairs(i)do if(not t[n])l=true
-end if(not l)i,f=no(n,e,t,self.s,nil,true)
-local d,r={},{}for n in all(j)do if(n~=self and n.R)local n,e=n.t.o\a,n.t.e\a add(d,{n,e})r[e*u+n]=true
-end local l,c,a=o,-999,0for e,n in pairs(i)do local i,f,n=e%u,e\u,-n if t[e]then n+=t[e]*10-100else n+=rnd(nD)local t=fget(mget(i,f))if(nP[t])n+=12
-if(t==6and self.s>nn-.1)n-=18
-if self.u>0and e~=self.e3 then local t=self:eq(i,f,r)n+=t if(e==o)a=t
-end local e=99for n in all(d)do e=min(e,abs(n[1]-i)+abs(n[2]-f))end n-=e/nU end if(n>c)l,c=e,n
-end self.eQ=l if l==o and a>0then if(rnd()<nv or self:eF(n,e))self._[5],self.e3=true self.nd=1else self.e3,self.nd=o,1
-end local n={l}while n[1]~=o do add(n,f[n[1]],1)end if(#n>1)deli(n,1)
-self.eK=n end u,a=16,8Q=124j={}Z={2,1,2,1,1}P=i()P:x(l(q))e=i(E)R=i(_)F=i(X)w=O(n)L=O(H)Z=split(stat(6))if(#Z<5)load"manbomber.p8"
-nS()r=L function _init()S()poke(24366,1)r:nw()end function _update()P:d()r:d()end x=.03333function _draw()x=1/stat(7)cls()P:i()r:i()end function S()pal()local n={0,129,130,138,139,5,6,10,13,140,8,7,9,132,136,12}for n,e in pairs(n)do pal(n-1,e,1)end end function V(n)if(n==0)S()return
-local e={{15,9},{3,4},{7,12}}local n=e[n]pal(10,n[1])pal(14,n[2])end function nc()pal(1,0)pal(10,1)pal(14,2)pal(5,1)pal(2,1)pal(7,2)pal(11,2)pal(13,2)pal(12,1)pal(8,1)end function nw()pal(3,4)pal(4,5)pal(7,8)pal(5,13)end
+e.i.nw=d end e:D("burn",a.q(n,1.5))e:D("fade",a.q({n[4],n[3],n[2],n[1],58},1.5,false,false))e:F("burn")add(self.G,l)r:nv({e=t,o=f},1)end function u:nN(e,o)local t=O(e,o)local n=t:l("Animator")n:D("burn",a.q({128,129,130,131},1.5))n:D("fade",a.q({131,130,129,128,58},2,false,false))n:F("burn")add(self.G,t)r:nv({e=e,o=o},1)end function u:f()self.v-=v if(self.v<=.3and not self.nk)for n in all(self.G)do n:l("Animator"):F("fade")local n=n:l("Transform")local n=_(n.e,n.o)r:nv(n,nil)end self.nk=true
+if(self.v<=0)r:np(self.a.r)return
+for n in all(self.G)do n:f()end end function u:t()for n in all(self.G)do n:t()end end function u.nO(n,e)local o=Q(n,e)for n=0,n3 do n4:ea(o.e+4,o.o+4,rnd(4)-2,rnd(4)-2,8,1,0,U)end H(n,e)if flr(rnd(100))<50then local o,t,f,i=flr(rnd(100)),0,0,{25,25,20,9,10,11}for d,i in pairs(i)do t+=i if(o>=f and o<=t)mset(n,e,47+d)return
+f+=i end end end A={r="Transform",e=0,o=0}function A:ny(n,e)self.e=n self.o=e end c={r="Sprite",i=0,u=nil,ne=false,nw=false,nB=1,nT=1,nA=0,nC=0}function c:h()self.u=self.a:l("Transform")end function c:t()local n,e=self.u.e-self.nA-3,self.u.o-self.nC spr(self.i,n,e,self.nB,self.nT,self.ne,self.nw)end function c:V(n)self.i=n end function c:nL(n,e)self.nB,self.nT=n,e end function c:ec(n,e)self.nA,self.nC=n,e end b={r="Animator",i=nil,H={},I="",no=0,nt=false}function b:h()self.i=self.a:l("Sprite")end function b:D(e,n)n.a=self self.H[e]=n end function b:F(n)if(n==self.I)return
+if(n~="")self.i:V(self.H[n]:n3())self.nt=true else self.i:V(self.H[self.I]:n3())self.nt=false
+self.I=n self.no=0end function b:f()if self.nt then self.no+=1if(self.no>=self.H[self.I].n_)self.i:V(self.H[self.I]:n3())self.no=0
+end end a={a=nil,nf={},m=0,n_=0,nS=false,n4=true}function a.q(o,t,f,e)local n=q({},{a},true)n.nf=o n.n_=t n.nS=f or false if(e==nil)n.n4=true else n.n4=e
+return n end function a:n3()self.m+=1if self.m>#self.nf then if(self.nS)self.a.i.ne=not self.a.i.ne
+if(self.n4)self:nQ()else self.a.nt=false return self.nf[self.m-1]
+end return self.nf[self.m]end function a:nQ()self.m=1end I={R,no,nR=false}n5,U={},0function I:eu()reload(8192,8192,4096)local n,e=self.e,self.o for o=n,n+15do for t=e,e+15do mset(o-n,t-e,mget(o,t))end end end function I:t()map(0,0,-3,0)if(self.nR)V()map(0,0,-3,0,16,16,128)
+end function I:e0()local o={}for n=3,13do for e=4,14do local t={e=n,o=e}if not fget(mget(n,e),0)then if(mget(n,e)~=53)add(o,t)else H(n,e)
+end end end local n=60+flr(rnd(5))for n=1,n do local n=1+flr(rnd(#o-1))local n=deli(o,n)mset(n.e,n.o,U)end end S={r="Camera",j={e=0,o=0},ni=false,nd=0,J=0}function S:n2(e,n)self.nd=e if(n>self.J)self.J=n
+self.ni=true end function S:f()if self.ni then if(self.nd<=0)self.ni=false self.J,self.nd=0,0else self.j={e=rnd(self.J),o=rnd(self.J)}self.nd-=v
+end end function S:t()if(self.ni)camera(self.j.e,self.j.o)else camera(0,0)
+end W={K=0,b={"game enhancements by:","macs","original game by:","max pellegrino","and","dominik leiser"},nz={},Q=function(n)for e=1,6do n.nz[e]=l({},T)end end}function W:t()self.K+=1if(self.K==18)sfx(3)
+if self.K>76then r=k(self,z)else for n,e in pairs(self.b)do local o,t=f(e),(n-1)*10+(n>2and 15or 0)if(self.K>18and self.K<48)print(e,o,35+t)else self.nz[n]:n0(e,o,35+t)
+end end end g={y=nil,E}X={{48,7,"hasty hare","makes you run faster.","don't get too fast though."},{49,7,"range +","improves the reach of your","bomb explosions."},{50,7,"bomb +","more bombs = more fun,","right?!"},{51,3,"the kicks","grants the ability to kick","bombs. very useful!"},{52,10,"slowpoke snail","slows you down - you'd be","best to avoid this one..."},{53,14,"curse","you should definitely","avoid this one."}}function g:Q()self.n5,self.g=0music(0)self.y=m(P)self.y.nE:h()local n=ne():l("Bomb")n.a:h()n.i.t=function(n)local n=n.i%16*8sspr(n,8,8,8,56,49,16,16)end n.U:F("Bomb")self.y.n1=n.a self.y.n1:nj("Bomb")self.d=m(G)end function g:n9()music(-1,-800)end function g:f()if self.g then self.nl+=1if(self.nl>=180)self.g,self.nl=self.g+1,0
+if(self.g>#X or btnp(❎)or btnp(🅾️))self.g,self.n5=nil,0
+else if(btnp(❎))self.y.n6=true sfx(3,3)
+self.n5+=1if(self.n5>=240and not self.y.n6)self.g,self.nl=1,0
+end self.y:f()self.d:f()end function g:t()palt(0,false)palt(4,true)self.d:t()if(self.g)palt(4,false)self:nU(X[self.g])palt()return
+map(32,0,0,0)palt()self.y:t()end function g:nU(n)local e=self.nl local e=e<12and(12-e)*11or e>168and(168-e)*11or 0?"items",f"items",12,11
+sspr(n[1]%16*8,n[1]\16*8,8,8,52+e,34,24,24)?n[3],f(n[3])+e,70,n[2]
+?n[4],f(n[4])+e,84,11
+?n[5],f(n[5])+e,92,11
+end P={n1=nil,L=50,n6=false,b=0,nr=-60,M=0,nE={nP="press ❎!",R,h=function(n)n.e=f(n.nP)end,t=function(n)T:n0(n.nP,n.e,80)end}}function P:f()self.n1:f()self.b+=1if self.b>60then self.M+=.5self.nr+=self.M if(self.nr>0)self.nr,self.M=0,self.M>2and-self.M/3or 0
+end if(self.n6)self.L-=5
+if(self.L<-10)x.d=z.d r=k(z,x)y:l("Camera"):n2(.4,3)sfx(1,3)
+end function P:t()sspr(56,16,64,8,2,self.L,128,16)if(self.b>60)self:nV(94,self.L-6+self.nr)
+if(self.L==50)self.n1:t()self.nE:t()
+end function P:nV(e,n)?"⁶odff⁶wplus",e,n,13
+for o=0,4do clip(0,n+o,128,1)?"⁶wplus",e,n,o<3and 7or 12
+end clip()end B={nW="select mode",nX=35,A={2,13,1,10,7,8},nY=148,x=0,n8={1,2,3},E}function B:Q()music(19,800)end function B:f()if(btnp(⬆️)and self.x>0)sfx(4)self.x-=1
+if(btnp(⬇️)and self.x<2)sfx(4)self.x+=1
+local e,n=self.n8,self.x+1if(btnp(⬅️)and e[n]>0)sfx(4)e[n]-=1
+if(btnp(➡️)and e[n]<n)sfx(4)e[n]+=1
+if(btnp(❎))sfx(3)s[1],s[2]=self.x+2,e[n]local n=e[n]>0and J or d n.d=self.d r=k(self,n)palt()
+self.d:f()end function B:t()palt(0,false)self.d:t()local n=self.nW?n,f(n),10,11
+for n=0,2do self:nZ(n,n==self.x)end end function B:nZ(n,t)local o,e=18,30+n*self.nX local f,i,d,r=o+92,e+24,1,92/(n+2)local l,a=r/2+o,e+5rectfill(o,e,f,i,0)if(not t)nf()
+local c=n+2-self.n8[n+1]for n=0,n+1do if(t)Y(n)
+spr(164,l-8,a,2,2)if(n>=c)print("cpu",l-5,e+2,t and 7or 1)
+l+=r end h()if t then d=4local t=e-8spr(self.nY+n,30,t)?"players",39,t+2,self.A[n+d]
+?"⬅️➡️cpu",71,t+2,6
+o,e,f,i=o-1,e-1,f+1,i+1end rect(o,e,f,i,self.A[n+d])end K={en={"easy","normal","hard"},A={3,7,10},B=34,T=86,s=2,E}function K:f()self.B,self.T=34,86local n=self.s if btnp(⬅️)and n>1then sfx(4)n-=1self.B-=1elseif btnp(➡️)and n<3then sfx(4)n+=1self.T+=1elseif btnp(❎)then sfx(3)s[3]=n d.d=self.d r=k(self,d)elseif btnp(🅾️)then sfx(4)r=x end self.s=n self.d:f()end function K:t()self.d:t()local n="select cpu level!"?n,f(n),20,11
+Y(1)spr(164,56,42,2,2)h()n=self.en[self.s]?n,f(n),72,self.A[self.s]
+if(self.s>1)spr(37,self.B,71,1,1,true)
+if(self.s<3)spr(37,self.T,71)
+end d={E,T=94,B=25,ee={{b="bombom plains",e=90},{b="frosty fields",e=82},{b="spooky cemetery",e=96}},s=1}function d:f()self.T,self.B=94,25local n=self.s if btnp(0)then n=n==1and 3or n-1self.B-=1elseif btnp(1)then n=n==3and 1or n+1self.T+=1elseif btnp(❎)then s[4]=n L.d=self.d r=k(self,L)sfx(3)elseif btnp(🅾️)then sfx(4)r=s[2]>0and J or x end self.d:f()self.s=n end function d:t()self.d:t()local n="select a stage!"?n,f(n),20,11
+local n=self.ee[self.s]h()map(n.e,1,44,44,5,5)if(self.s==3)V()map(n.e,1,44,44,5,5,128)
+h()?n.b,f(n.b),100,11
+spr(37,self.B,60,1,1,true)spr(37,self.T,60)end j={na=-64,k=1,N=false,nm=50,n7=67,E}function j:nc()self.na=-64self.N=false end function j:f()self.nm,self.n7=50,67local n=self.na n=n<0and n+5or 0self.na=n if not self.N then if(btnp(⬆️)and self.k<9)sfx(4)self.nm+=1self.k+=1
+if(btnp(⬇️)and self.k>1)sfx(4)self.n7-=1self.k-=1
+if btnp(❎)then sfx(3)self.N=true elseif btnp(🅾️)then sfx(4)r=d end else if(btnp(🅾️))self.N=false
+if(btnp(❎))sfx(1)s[5]=self.k ni(self)music(-1,800)sfx(2)y:l("Camera"):n2(.4,3)
+end self.d:f()end function j:t()self.d:t()local n=self.na rectfill(90-n,54,100-n,70,1)rect(89-n,53,101-n,71,11)spr(36,91-n,self.nm)spr(36,91-n,self.n7,1,1,false,true)?self.k,94-n,60
+?"how many wins?",28-n,60
+if self.N then?self.k,94,60,7
+T:n0("❎",51,85)spr(109,60,84,2,1)end end function ni()local n=""for e in all(s)do n..=e..","end load("manbomber-plus_game","back to menu",n)end n6,n8=16,8nt=124nm={}s={2,1,2,1,1}y=m()y:c(o(S))z=n(g)x=n(B)J=n(K)L=n(j)d=n(d)nd=n(W)r=nd local n=split(stat(6))if(#n>=5)s=n x.x=n[1]-2x.n8[n[1]-1]=n[2]J.s,d.s,L.k=n[3],n[4],n[5]r=z
+function _init()h()poke(24366,1)r:nc()end function _update()y:f()r:f()end v=.03333function _draw()v=1/stat(7)cls()y:t()r:t()end function h()pal()local n={0,129,130,138,139,5,6,10,13,140,8,7,9,132,136,12}for n,e in pairs(n)do pal(n-1,e,1)end end function Y(n)if(n==0)h()return
+local e={{15,9},{3,4},{7,12}}local n=e[n]pal(10,n[1])pal(14,n[2])end function nf()pal(1,0)pal(10,1)pal(14,2)pal(5,1)pal(2,1)pal(7,2)pal(11,2)pal(13,2)pal(12,1)pal(8,1)end function V()pal(3,4)pal(4,5)pal(7,8)pal(5,13)end
 __gfx__
 00000000111111122cccd7b2eaac7aaa888888888888888888888888377342528888888888888888ffffffff3333333333333333333333332444433333442000
 000000001b6b66622dddddd2e33c73aa888528888888888883888828344422d28828885888288888ffffffff3733374734377333333773432437344333774200

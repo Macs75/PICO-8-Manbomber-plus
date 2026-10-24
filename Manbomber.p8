@@ -9,6 +9,7 @@ __lua__
 -- @author Joeb Rogers
 -- @license MIT
 -- @copyright Joeb Rogers 2018
+-- @author manbomber-plus Macs
 
 sin1 = sin function sin(angle) return sin1(-angle/(3.1415*2)) end 
 cos1 = cos function cos(angle) return cos1(angle/(3.1415*2)) end
@@ -547,6 +548,7 @@ end
 
 -->8
 --Particle System
+--#only single game
 
 _particleSystem = {
     particles = {},
@@ -593,8 +595,10 @@ function _particleSystem:addParticles(xPos, yPos, xSpeed, ySpeed, lifetime, size
     })
 end
 
+--#end
 -->8
 --Spark and Fire System
+--#only single menu
 
 _fire = {
     embers = {},
@@ -652,8 +656,10 @@ function _ember:draw()
     spr(self.sprite, self.x, self.y)
 end
 
+--#end
 -->8
 --Player Component
+--#only single game
 maxSpeed, maxBombs, maxRange = 1.6, 6, 6
 spawns = {{x=3,y=4},{x=13,y=14},{x=3,y=14},{x=13,y=4}}
 idles = {"SideIdle", "SideIdle", "UpIdle", "DownIdle"} 
@@ -725,30 +731,38 @@ function _playerComponent:update()
     end
 end
 
+--btn/btnp for this player: the pad, or the cpu's choice
+function _playerComponent:btn(b)
+    if (self.cpu) return self.cpuPad[b]
+    if (b == 5) return btnp(5, self.id)
+    return btn(b, self.id)
+end
+
 function _playerComponent:handleInput()
-    local id,dir = self.id, self.direction
+    if (self.cpu) self:cpuThink()
+    local dir = self.direction
     local accel = self.speed
     local animation = idles[self.direction + 1]
-    if (btn(0, id)) then
+    if (self:btn(0)) then
          self.dx -= accel 
          animation = "SideWalk"
          self.sprite.flipped_x = true
          dir = 0
-    elseif (btn(1, id)) then
+    elseif (self:btn(1)) then
         self.dx += accel
         animation = "SideWalk"
         self.sprite.flipped_x = false
         dir = 1
-    elseif (btn(2, id)) then 
+    elseif (self:btn(2)) then 
         self.dy -= accel
         animation = "UpWalk"
         dir = 2
-    elseif (btn(3, id)) then
+    elseif (self:btn(3)) then
         self.dy += accel
         animation = "DownWalk"
         dir = 3
     end
-    if (btnp(5, id)) self:tryDropBomb()
+    if (self:btn(5)) self:tryDropBomb()
     if not (self.animator.currentAnim == animation) then 
         self.animator:setAnimation(animation)
     end
@@ -778,7 +792,7 @@ function _playerComponent:handleCollision()
         self:die()
         return
     end
-    local isOnBomb = self:isOnOwnBomb()
+    local isOnBomb = self:isOnBomb()
     if dx != 0 then
         local xdir
         if (dx > 0) xdir = "right" else xdir = "left"
@@ -860,9 +874,9 @@ function _playerComponent:checkForItems()
     end
 end
 
-function _playerComponent:isOnOwnBomb()
-    local bomb = currentScene:getBombAtCell(to_map(self.transform.x, self.transform.y))
-    return bomb and bomb.parentPlayer == self
+--anyone standing on a bomb can walk off it
+function _playerComponent:isOnBomb()
+    return currentScene:getBombAtCell(to_map(self.transform.x, self.transform.y))
 end
 
 function _playerComponent:onRoundWin()
@@ -877,6 +891,7 @@ function _playerComponent:die()
     currentScene:onPlayerDied(self.parent.name)
 end
 
+--#end
 -->8
 --Bombs
 _bombComponent = {
@@ -1272,6 +1287,7 @@ end
 
 -->8
 --UI
+--#only single game
 _PlayerUI = {
     wins = {0,0,0,0},
     xPositions = {28,86,4,110},
@@ -1400,8 +1416,10 @@ function _VictoryUI:champ()
     print("❎", 114, self.y + 8, 11)
 end
 
+--#end
 -->8
 --Screen Conversion
+--#only single game
 function to_screen(x,y)
     local screenPos={}
     screenPos.x = x*tilesize
@@ -1433,8 +1451,10 @@ function setGround(x, y)
     mset(x, y, groundTiles[s])
     mset(x + mapsize, y + mapsize, 0) -- set ground for collision map
 end
+--#end
 -->8
 --Collision
+--#only single game
 function initCollisionMap()
     for x=0,15 do
         for y=0,15 do
@@ -1500,6 +1520,7 @@ function collidesPlayer(cellPos)
     return false
 end
 
+--#end
 -->8
 -- Camera
 
@@ -1538,12 +1559,13 @@ end
 
 -->8
 --Scenes
+--#only single menu
 _credits = {
     c = 0,
-    t = {"a game by:", "max pellegrino","and","dominik leiser"},
+    t = {"game enhancements by:", "macs", "original game by:", "max pellegrino","and","dominik leiser"},
     fx = {},
     start = function(self) 
-        for i=1,4 do
+        for i=1,6 do
             self.fx[i] = deepAssign({}, textFx)
         end
     end
@@ -1556,7 +1578,7 @@ function _credits:draw()
         currentScene = changeScene(self, titleScene)
     else
         for i,t in pairs(self.t) do
-            local x, y = txtM(t), i == 1 and 0 or 15 + (i-1) * 10
+            local x, y = txtM(t), (i-1) * 10 + (i > 2 and 15 or 0)
             if (self.c > 18 and self.c < 48) print(t, x, 35 + y) else self.fx[i]:drawBlinkingText(t, x, 35 + y)
         end
     end
@@ -1567,7 +1589,20 @@ _titleScene = {
     fire
 }
 
+--attract mode: after 8 s on the title without ❎ the items
+--slide past one by one, with the game's own sprites.
+--sprite, name colour, name, two lines of what it does
+attractItems = {
+    {48, 7, "hasty hare", "makes you run faster.", "don't get too fast though."},
+    {49, 7, "range +", "improves the reach of your", "bomb explosions."},
+    {50, 7, "bomb +", "more bombs = more fun,", "right?!"},
+    {51, 3, "the kicks", "grants the ability to kick", "bombs. very useful!"},
+    {52, 10, "slowpoke snail", "slows you down - you'd be", "best to avoid this one..."},
+    {53, 14, "curse", "you should definitely", "avoid this one."}
+}
+
 function _titleScene:start()
+    self.idle, self.att = 0
     music(00)
     self.title = createEntity(_titleTextEnt)
     self.title.startText:init()
@@ -1589,9 +1624,18 @@ function _titleScene:unload()
 end
 
 function _titleScene:update()
-    if (btnp(❎)) then
-        self.title.anim = true
-        sfx(3, 3)
+    if self.att then
+        --6 s per item; ❎ or 🅾️ back to the title
+        self.at += 1
+        if (self.at >= 180) self.att, self.at = self.att + 1, 0
+        if (self.att > #attractItems or btnp(❎) or btnp(🅾️)) self.att, self.idle = nil, 0
+    else
+        if (btnp(❎)) then
+            self.title.anim = true
+            sfx(3, 3)
+        end
+        self.idle += 1
+        if (self.idle >= 240 and not self.title.anim) self.att, self.at = 1, 0
     end
     self.title:update()
     self.fire:update()
@@ -1601,15 +1645,36 @@ function _titleScene:draw()
     palt(0, false)
     palt(4,true)
     self.fire:draw()
+    if self.att then
+        palt(4, false)
+        self:drawItem(attractItems[self.att])
+        palt()
+        return
+    end
     map(32,0,0,0)
     palt()
     self.title:draw()
+end
+
+--one item of the attract mode, sliding in from the right
+--and out to the left
+function _titleScene:drawItem(it)
+    local t = self.at
+    local x = t < 12 and (12 - t) * 11 or t > 168 and (168 - t) * 11 or 0
+    print("items", txtM("items"), 12, 11)
+    sspr(it[1] % 16 * 8, it[1] \ 16 * 8, 8, 8, 52 + x, 34, 24, 24)
+    print(it[3], txtM(it[3]) + x, 70, it[2])
+    print(it[4], txtM(it[4]) + x, 84, 11)
+    print(it[5], txtM(it[5]) + x, 92, 11)
 end
 
 _titleTextEnt = {
     bomb = nil,
     yPos = 50,
     anim = false,
+    t = 0, --frames on the title
+    py = -60, --"plus" tag drop: offset from its rest spot, speed
+    pv = 0,
     startText = {
         text = "press ❎!",
         x,
@@ -1624,6 +1689,13 @@ _titleTextEnt = {
 
 function _titleTextEnt:update()
     self.bomb:update()
+    --after 2 s the "plus" tag drops on the title, with a bounce or two
+    self.t += 1
+    if self.t > 60 then
+        self.pv += 0.5
+        self.py += self.pv
+        if (self.py > 0) self.py, self.pv = 0, self.pv > 2 and -self.pv / 3 or 0
+    end
     if (self.anim) self.yPos -= 5
     if self.yPos < -10 then
         selectionScene.fire = titleScene.fire
@@ -1635,10 +1707,22 @@ end
 
 function _titleTextEnt:draw()
     sspr(56,16,64,8,2,self.yPos,128,16)
+    if (self.t > 60) self:drawPlus(94, self.yPos - 6 + self.py)
     if (self.yPos == 50) then
         self.bomb:draw()
         self.startText:draw()
     end
+end
+
+--"plus" in the title's colours: wide font with a brown outline,
+--then row by row yellow on top and orange at the bottom
+function _titleTextEnt:drawPlus(x, y)
+    print("\^odff\^wplus", x, y, 13)
+    for r = 0, 4 do
+        clip(0, y + r, 128, 1)
+        print("\^wplus", x, y, r < 3 and 7 or 12)
+    end
+    clip()
 end
 
 _selectionScene = {
@@ -1647,6 +1731,7 @@ _selectionScene = {
     colors = {2,13,1,10,7,8},
     numberP = 148,
     cursorPos = 0,
+    cpus = {1,2,3}, --cpu players per mode: all but player 1
     fire
 }
 
@@ -1663,12 +1748,21 @@ function _selectionScene:update()
 		sfx(04)
 		self.cursorPos += 1
     end
+    local c, n = self.cpus, self.cursorPos + 1
+    if btnp(⬅️) and c[n] > 0 then
+        sfx(04)
+        c[n] -= 1
+    end
+    if btnp(➡️) and c[n] < n then
+        sfx(04)
+        c[n] += 1
+    end
     if btnp(❎) then 
         sfx(03)
-        mainScene.playerCount = self.cursorPos + 2
-        playerUI:reset()
-        _stageSelectionScene.fire = self.fire
-        currentScene = changeScene(self, _stageSelectionScene)
+        setup[1], setup[2] = self.cursorPos + 2, c[n]
+        local nxt = c[n] > 0 and levelSelectionScene or _stageSelectionScene
+        nxt.fire = self.fire
+        currentScene = changeScene(self, nxt)
         palt()
     end
     self.fire:update()
@@ -1695,22 +1789,73 @@ function _selectionScene:drawPlayerRect(rectNo, selected)
     rectfill(x1,y1,x2,y2,0)
 
     if (not selected) dimPal()
+    local humans = rectNo + 2 - self.cpus[rectNo + 1]
     for i=0, rectNo + 1 do
         if (selected) setPlayerPal(i)
         spr(164,playerX-8, playerY, 2,2)
+        if (i >= humans) print("cpu", playerX - 5, y1 + 2, selected and 7 or 1)
         playerX += rectFraction
     end
     setPal()
 
     if selected then
         colorOffset = 4 
-        local textX, textY = 46, y1 - 8
+        --"n players  ⬅️➡️cpu", centred
+        local textX, textY = 30, y1 - 8
         spr(self.numberP + rectNo, textX, textY)
         print("players", textX + 9, textY + 2, self.colors[rectNo + colorOffset])
+        print("⬅️➡️cpu", textX + 41, textY + 2, 6)
         x1,y1,x2,y2 = x1 - 1, y1 - 1, x2 + 1, y2 + 1
     end
 
     rect(x1, y1, x2, y2, self.colors[rectNo + colorOffset])
+end
+
+_levelSelectionScene = {
+    names = {"easy", "normal", "hard"},
+    colors = {3, 7, 10}, --green, yellow, red
+    leftArrowX = 34,
+    rightArrowX = 86,
+    i = 2,
+    fire
+}
+
+function _levelSelectionScene:update()
+    self.leftArrowX, self.rightArrowX = 34, 86
+    local i = self.i
+    if btnp(⬅️) and i > 1 then
+        sfx(4)
+        i -= 1
+        self.leftArrowX -= 1
+    elseif btnp(➡️) and i < 3 then
+        sfx(4)
+        i += 1
+        self.rightArrowX += 1
+    elseif btnp(❎) then
+        sfx(3)
+        setup[3] = i
+        _stageSelectionScene.fire = self.fire
+        currentScene = changeScene(self, _stageSelectionScene)
+    elseif btnp(🅾️) then
+        --back to the player choice
+        sfx(4)
+        currentScene = selectionScene
+    end
+    self.i = i
+    self.fire:update()
+end
+
+function _levelSelectionScene:draw()
+    self.fire:draw()
+    local txt = "select cpu level!"
+    print(txt, txtM(txt), 20, 11)
+    setPlayerPal(1)
+    spr(164, 56, 42, 2, 2)
+    setPal()
+    txt = self.names[self.i]
+    print(txt, txtM(txt), 72, self.colors[self.i])
+    if (self.i > 1) spr(37, self.leftArrowX, 71, 1, 1, true)
+    if (self.i < 3) spr(37, self.rightArrowX, 71)
 end
 
 _stageSelectionScene = {
@@ -1731,22 +1876,14 @@ function _stageSelectionScene:update()
         i = i == 3 and 1 or i + 1
         self.rightArrowX += 1
      elseif btnp(❎) then
-        if i == 1 then
-            mapEnt.x, mapEnt.y, mapEnt.dark = 0,0,false
-            groundTiles = {4,5,6,8,9}
-            blockSprite = 2
-        elseif i == 2 then
-            mapEnt.x, mapEnt.y, mapEnt.dark = 32,16, false
-            groundTiles = {23,24,25,184}
-            blockSprite = 3
-        else
-            mapEnt.x, mapEnt.y, mapEnt.dark = 16,16,true
-            groundTiles = {4,5,6,8,9}
-            blockSprite = 22
-        end
+        setup[4] = i
         winSelectionScene.fire = self.fire
         currentScene = changeScene(self, winSelectionScene)
         sfx(3)
+     elseif btnp(🅾️) then
+        --back to the cpu level or player choice
+        sfx(4)
+        currentScene = setup[2] > 0 and levelSelectionScene or selectionScene
      end
      self.fire:update()
      self.i = i
@@ -1804,6 +1941,10 @@ function _winSelectionScene:update()
         if btnp(❎) then
             sfx(3)
             self.selected = true
+        elseif btnp(🅾️) then
+            --back to the stage choice
+            sfx(4)
+            currentScene = _stageSelectionScene
         end
     else 
         if (btnp(🅾️)) then
@@ -1812,8 +1953,8 @@ function _winSelectionScene:update()
 
         if btnp(❎) then
             sfx(1)
-            mainScene.neededWins, roundIndicationScene.round = self.winNumber, 1
-            currentScene = changeScene(self, roundIndicationScene)
+            setup[5] = self.winNumber
+            startMatch(self)
             music(-1, 800)
             sfx(2)
             cam:getComponent("Camera"):shake(0.4, 3)
@@ -1839,10 +1980,67 @@ function _winSelectionScene:draw()
     end
 end
 
+--#end
+--#only single game
+--stage i's map, ground tiles and blocks
+function setStage(i)
+    if i == 1 then
+        mapEnt.x, mapEnt.y, mapEnt.dark = 0,0,false
+        groundTiles = {4,5,6,8,9}
+        blockSprite = 2
+    elseif i == 2 then
+        mapEnt.x, mapEnt.y, mapEnt.dark = 32,16, false
+        groundTiles = {23,24,25,184}
+        blockSprite = 3
+    else
+        mapEnt.x, mapEnt.y, mapEnt.dark = 16,16,true
+        groundTiles = {4,5,6,8,9}
+        blockSprite = 22
+    end
+end
+
+--a match as set up in the menus
+function applySetup()
+    local s = setup
+    mainScene.playerCount, mainScene.cpuCount, mainScene.neededWins = s[1], s[2], s[5]
+    cpuSetLevel(s[3])
+    setStage(s[4])
+    playerUI:reset()
+    roundIndicationScene.round = 1
+end
+
+--#end
+--#only single
+function startMatch(from)
+    applySetup()
+    currentScene = changeScene(from, roundIndicationScene)
+end
+
+function toTitle()
+    currentScene = changeScene(victoryScene, titleScene)
+end
+--#end
+--[[#only menu
+--the match is the other cart: hand it the set up
+function startMatch()
+    local p = ""
+    for v in all(setup) do p ..= v.."," end
+    load("manbomber_game.p8", "back to menu", p)
+end
+--]]
+--[[#only game
+--back to the menu cart's title, with the set up it gave us
+function toTitle()
+    load("manbomber.p8", nil, stat(6))
+end
+--]]
+--#only single game
+
 _mainScene = {  
     bombs = {},
     explosions = {},
     playerCount,
+    cpuCount = 0,
     livingPlayers = {},
     neededWins,
     timer
@@ -1886,6 +2084,7 @@ end
 function _mainScene:setUpPlayers()
     for i=0,self.playerCount-1 do
         local player = createPlayer(i)
+        player:getComponent("Player").cpu = i >= self.playerCount - self.cpuCount
         self:addEntity(player)
         add(self.livingPlayers, player.name)
         add(gPlayers, player:getComponent("Player"))
@@ -2099,9 +2298,7 @@ function _victoryScene:onLoad()
     local victoryEnt = createEntity(_VictoryUI)
     victoryEnt.winnerId = self.champId
     victoryEnt.y = 35
-    victoryEnt.onBtnPress = function(self) 
-        currentScene = changeScene(victoryScene, titleScene)
-    end
+    victoryEnt.onBtnPress = toTitle
     victoryEnt:setMode("champ")
     self.victoryUI = victoryEnt
     music(21)
@@ -2147,29 +2344,317 @@ function _victoryScene:draw()
     if (self.state != "fall") self.victoryUI:draw()
 end
 
+--#end
+-->8
+--cpu player
+--#only single game
+-- a cpu player presses virtual buttons (cpuPad) that
+-- handleInput reads instead of the pad. every few frames
+-- it maps when each cell will burn, finds the cells it can
+-- walk to without stepping into fire, and picks the best
+-- one: out of a blast first, then power-ups, then a spot
+-- where a bomb breaks blocks or catches a rival. it drops
+-- a bomb when it can still reach a safe cell afterwards
+-- (mostly). in between it walks the path it chose.
+
+cpuDirs = {{-1,0},{1,0},{0,-1},{0,1}} --index-1 = btn 0-3
+goodItems = {[0x6]=true,[0xa]=true,[0x12]=true,[0x22]=true}
+badItems = {[0x42]=true,[0xe]=true}
+--seconds a cpu wants to be out of a cell before it burns
+cpuMargin = 0.9
+--how human it plays: it decides every cpuReact frames
+--plus up to cpuReactRnd more, so it sees new bombs late;
+--cpuWobble is noise on how much it likes each cell;
+--cpuSloppy is the chance it drops a bomb without
+--checking for a way out; cpuHit is how much it wants a
+--rival in its blast; it walks towards the nearest rival
+--by 1/cpuChase per cell; cpuBlind is the chance per frame
+--it stops minding snails and skulls for 1.5 s (random,
+--so there is no rhythm to wait for); cpuFast is the speed
+--it can handle: it stops taking speed ups there, and
+--faster than that it overshoots now and then.
+--one row per level: easy, normal, hard
+cpuLevels = {
+    {12, 8, 8, 0.18, 4, 8, 1/450, 1},
+    {6, 4, 4, 0.08, 8, 4, 1/900, 1.2},
+    {3, 2, 2, 0.03, 14, 2, 1/1800, 1.4}
+}
+function cpuSetLevel(i)
+    cpuReact, cpuReactRnd, cpuWobble, cpuSloppy, cpuHit, cpuChase, cpuBlind, cpuFast = unpack(cpuLevels[i])
+end
+cpuSetLevel(2)
+
+--walls, blocks, bombs and fallen hazard blocks
+function cpuSolid(x, y)
+    return fget(mget(x + mapsize, y + mapsize), 0)
+end
+
+--calls f(x,y) for every cell a bomb at c with range r hits
+function cpuBlast(c, r, f)
+    f(c.x, c.y)
+    for v in all(cpuDirs) do
+        for k=1,r do
+            local x, y = c.x + v[1]*k, c.y + v[2]*k
+            local s = mget(x, y)
+            if (fget(s, 0) and not fget(s, 1)) break --wall
+            f(x, y)
+            if (fget(s, 1) or currentScene.bombs[y*mapsize + x]) break
+        end
+    end
+end
+
+--seconds until each cell (by mapIndex) burns, 0 = now.
+--extra: a bomb we are thinking of dropping
+function cpuDanger(extra)
+    local d, bl = {}, {}
+    for i in pairs(currentScene.explosions) do d[i] = 0 end
+    for i,b in pairs(currentScene.bombs) do
+        add(bl, {c = IndexToCell(i), t = b.lifetime, r = b.range})
+    end
+    if (extra) add(bl, extra)
+    --a bomb inside another's blast goes off with it
+    for pass=1,2 do
+        for b in all(bl) do
+            cpuBlast(b.c, b.r, function(x, y)
+                for o in all(bl) do
+                    if (o.c.x == x and o.c.y == y and o.t > b.t) o.t = b.t
+                end
+            end)
+        end
+    end
+    for b in all(bl) do
+        cpuBlast(b.c, b.r, function(x, y)
+            local i = y*mapsize + x
+            d[i] = min(d[i] or 99, b.t)
+        end)
+    end
+    --the next stage hazard block is about to fall
+    if mainScene.timer.time <= 41 then
+        for x=0,15 do
+            for y=0,15 do
+                if (mget(x, y) == 38) d[y*mapsize + x] = 0
+            end
+        end
+    end
+    return d
+end
+
+--walking distance (cells) and previous cell on the way
+--to every cell reachable from (x,y) without walking into
+--fire.
+--margin: seconds we want to be through a cell before it
+--burns; blind: walk over snails and skulls too.
+--speed ups it doesn't want go on hold (later) until every
+--cell it can reach without them is found, so it only
+--crosses one when there is no other way
+function cpuPaths(x, y, d, speed, margin, blind)
+    local start = y*mapsize + x
+    local dist, prev, q, h, later = {[start] = 0}, {}, {start}, 1, {}
+    while h <= #q or #later > 0 do
+        if (h > #q) add(q, deli(later, 1))
+        local i = q[h]
+        h += 1
+        --seconds until we are in the next cell
+        local t = (dist[i] + 1) * tilesize / speed / 30
+        for v in all(cpuDirs) do
+            local nx, ny = i%mapsize + v[1], i\mapsize + v[2]
+            local j, dj, f = ny*mapsize + nx, d[ny*mapsize + nx], fget(mget(nx, ny))
+            if not dist[j] and not cpuSolid(nx, ny)
+                and (blind or not badItems[f])
+                and not (dj and dj < t + (margin or 0.5) and dj + 0.7 > t) then
+                dist[j], prev[j] = dist[i] + 1, i
+                add(f == 0x6 and speed > cpuFast - 0.1 and later or q, j)
+            end
+        end
+    end
+    return dist, prev
+end
+
+--how much a bomb at (x,y) would do: blocks, bad items and rivals
+--(rivalAt, by mapIndex) hit
+function _playerComponent:cpuBombValue(x, y, rivalAt)
+    local v = 0
+    cpuBlast({x = x, y = y}, self.bombRange, function(bx, by)
+        --a block, or a bad item in the way (fire clears it)
+        local s = fget(mget(bx, by))
+        if (s & 2 > 0 and s & itemBitfield == 0 or badItems[s]) v += 3
+        if (rivalAt[by*mapsize + bx]) v += cpuHit
+    end)
+    return v
+end
+
+--true when a bomb dropped at (x,y) still leaves a way out
+function _playerComponent:cpuCanEscape(x, y)
+    local d = cpuDanger({c = {x = x, y = y}, t = 2, r = self.bombRange})
+    for j in pairs(cpuPaths(x, y, d, self.speed, cpuMargin)) do
+        if (not d[j]) return true
+    end
+end
+
+--press towards the middle of cell (x,y), lining up on the
+--other axis first so corners don't catch us
+function _playerComponent:cpuSteer(x, y)
+    local pad, s = self.cpuPad, self.speed / 2
+    local ex = x*tilesize + 4 - self.transform.x
+    local ey = y*tilesize + 4 - self.transform.y
+    local function press(e, lo, hi)
+        if (e < -s) pad[lo] = true
+        if (e > s) pad[hi] = true
+    end
+    if abs(ex) > abs(ey) then
+        if (abs(ey) > 1) press(ey, 2, 3) else press(ex, 0, 1)
+    else
+        if (abs(ex) > 1) press(ex, 0, 1) else press(ey, 2, 3)
+    end
+end
+
+function _playerComponent:cpuThink()
+    self.cpuPad = {}
+    --now and then it doesn't see the bad items
+    if (rnd() < cpuBlind) self.cpuBlindEnd = time() + 1.5
+    local cx, cy = self.transform.x\tilesize, self.transform.y\tilesize
+    self.cpuWait = (self.cpuWait or 0) - 1
+    if self.cpuWait <= 0 then
+        self.cpuWait = cpuReact + flr(rnd(cpuReactRnd + 1))
+        self:cpuPlan(cx, cy)
+    end
+    --walk the path: steer to its next cell, drop the cells
+    --we have reached, wait in the middle at the end
+    local path = self.cpuPath
+    if (path[1] == cy*mapsize + cx and #path > 1) deli(path, 1)
+    self:cpuSteer(path[1]%mapsize, path[1]\mapsize)
+    --too fast for it: now and then it keeps pressing the
+    --last direction for a few frames and overshoots, more
+    --often the faster it is (every 1.5 s per speed up over)
+    local over = self.speed - cpuFast
+    if (over > 0.1 and rnd() < over / 9) self.cpuSlip = 4 + flr(rnd(5))
+    if (self.cpuSlip or 0) > 0 then
+        self.cpuSlip -= 1
+        self.cpuPad = self.cpuLast
+        self.cpuPad[5] = nil
+    end
+    self.cpuLast = self.cpuPad
+end
+
+function _playerComponent:cpuPlan(cx, cy)
+    local here = cy*mapsize + cx
+    local d = cpuDanger()
+    local blind = time() < (self.cpuBlindEnd or 0)
+    --plan with the same wide margin as the bomb drop check;
+    --only take tighter chances, over any item, when that
+    --leaves no safe cell
+    local dist, prev = cpuPaths(cx, cy, d, self.speed, cpuMargin, blind)
+    local safe
+    for j in pairs(dist) do
+        if (not d[j]) safe = true
+    end
+    if (not safe) dist, prev = cpuPaths(cx, cy, d, self.speed, nil, true)
+    --rivals still in the round, by cell
+    local rivals, rivalAt = {}, {}
+    for p in all(gPlayers) do
+        if p != self and p.alive then
+            local rx, ry = p.transform.x\tilesize, p.transform.y\tilesize
+            add(rivals, {rx, ry})
+            rivalAt[ry*mapsize + rx] = true
+        end
+    end
+    --score every reachable cell, keep the best
+    local goal, best, bombHere = here, -999, 0
+    for j,n in pairs(dist) do
+        local x, y = j%mapsize, j\mapsize
+        local v = -n
+        if d[j] then
+            v += d[j] * 10 - 100 --never wait inside a blast
+        else
+            v += rnd(cpuWobble)
+            local f = fget(mget(x, y))
+            if (goodItems[f]) v += 12
+            --enough speed: rather not stand on another one
+            if (f == 0x6 and self.speed > cpuFast - 0.1) v -= 18
+            if self.bombs > 0 and j != self.cpuNoDrop then
+                local b = self:cpuBombValue(x, y, rivalAt)
+                v += b
+                if (j == here) bombHere = b
+            end
+            --drift towards the nearest rival
+            local near = 99
+            for r in all(rivals) do
+                near = min(near, abs(r[1] - x) + abs(r[2] - y))
+            end
+            v -= near / cpuChase
+        end
+        if (v > best) goal, best = j, v
+    end
+    self.cpuGoal = goal
+    --one roll per spot: no way out and careful this time
+    --means forget bombing here, not wait and roll again
+    if goal == here and bombHere > 0 then
+        if rnd() < cpuSloppy or self:cpuCanEscape(cx, cy) then
+            self.cpuPad[5], self.cpuNoDrop = true
+            self.cpuWait = 1 --and run, next frame
+        else
+            self.cpuNoDrop, self.cpuWait = here, 1
+        end
+    end
+    --the path to the goal, next cell first
+    local path = {goal}
+    while path[1] != here do
+        add(path, prev[path[1]], 1)
+    end
+    if (#path > 1) deli(path, 1)
+    self.cpuPath = path
+end
+
+--#end
 -->8
 --Main
 mapsize, tilesize= 16, 8
 itemBitfield = 0x7C
 
 gPlayers = {}
+--the match the menus set up: players, cpus, cpu level,
+--stage, wins
+setup = {2, 1, 2, 1, 1}
 
 --set up Cam
 cam = createEntity()
 cam:addComponent(createComponent(_camComponent))
+--#only single game
 mapEnt = createEntity(_mapComponent)
 particleSystem = createEntity(_particleSystem)
 playerUI = createEntity(_PlayerUI)
-
 mainScene = createScene(_mainScene)
+roundIndicationScene = createScene(_roundIndicationScene) 
+--#end
+--#only single menu
 titleScene = createScene(_titleScene)
 selectionScene = createScene(_selectionScene)
+levelSelectionScene = createScene(_levelSelectionScene)
 winSelectionScene = createScene(_winSelectionScene)
-roundIndicationScene = createScene(_roundIndicationScene) 
 _stageSelectionScene = createScene(_stageSelectionScene)
 credits = createScene(_credits)
-
 currentScene = credits
+--#end
+--[[#only menu
+--back from a match: straight to the title, with the menus
+--on the choices of that match
+local s = split(stat(6))
+if #s >= 5 then
+    setup = s
+    selectionScene.cursorPos = s[1] - 2
+    selectionScene.cpus[s[1] - 1] = s[2]
+    levelSelectionScene.i, _stageSelectionScene.i, winSelectionScene.winNumber = s[3], s[4], s[5]
+    currentScene = titleScene
+end
+--]]
+--[[#only game
+--the menu cart hands over the set up; started on its own,
+--this cart goes to the menu
+setup = split(stat(6))
+if (#setup < 5) load("manbomber.p8")
+applySetup()
+currentScene = roundIndicationScene
+--]]
 --currentScene = titleScene
 
 --showFps = false
